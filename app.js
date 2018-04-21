@@ -209,7 +209,7 @@ function engage(targets,session,direct){
 
     // Export the connector for any downstream integration - e.g. registering a messaging extension
     module.exports.connector = connector;
-};
+}
 
 
 
