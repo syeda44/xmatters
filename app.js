@@ -45,7 +45,7 @@ bot.dialog('/', [
         builder.Prompts.text(session, "You asked for help");
     },
     function (session, results) {
-        session.send("Got it... ");
+        session.send("Got it... " + text);
     }
 ]);
         
