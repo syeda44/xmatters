@@ -1,15 +1,15 @@
 {
     "bot": {
-        "microsoftAppId": "c992d40a-d64c-4321-adfe-4aab2da59e65",
-        "microsoftAppPassword": "HdNyMB4*N${!|83^"
+        "microsoftAppId": "6848a9da-07cb-43f5-a4ce-8f87cc4551a9",
+        "microsoftAppPassword": "Xq@&}CNkbHwpk.#Z"
     },
     "xmatters": {
-    	"url": "https://xmatters-url.com",
-    	"username": "user",
-    	"password": "pass",
+    	"url": "https://advisors.na5.xmatters.com",
+    	"username": "kapgar",
+    	"password": "Welcome1",
     	"integrationCodes":{
-    		"engage_incident": "********-****-****-****-************",
-    		"confCall": "********-****-****-****-************"
+    		"engage_incident": "/api/integration/1/functions/8a347908-ceb4-4a79-a12b-5a34a476823d/triggers",
+    		"confCall": "/api/integration/1/functions/d0b40e9a-dc4b-4620-93ec-03e96f5cabf8/triggers"
     	}
     }
 }
