@@ -46,7 +46,8 @@ var bot = new builder.UniversalBot(connector, function (session) {
          session.send("You said" + text);
          break;
    }
-})
+});
+bot.set('storage', tableStorage);
 
 
         
