@@ -38,11 +38,10 @@ bot.set('storage', tableStorage);
 
 bot.dialog('/', [
     function (session) {
-       var text = teams.TeamsMessage.getTextWithoutMentions(session.message);
-        builder.Prompts.text(session, 'You asked for help. Yes or No?');
+        builder.Prompts.text(session, "You asked for help");
     },
-   function (session, results) {
-        session.endDialog('Sounds good.', results.response);
+    function (session, results) {
+        session.send("Got it... ");
     }
 ]);
         
