@@ -40,7 +40,7 @@ bot.set('storage', tableStorage);
 
 bot.dialog('/', [
     function (session) {
-       var text = results.response;
+       var text = session.message.text;
        console.log(text);
         builder.Prompts.text(session, "You asked for help");
     },
