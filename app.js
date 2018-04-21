@@ -39,7 +39,12 @@ bot.set('storage', tableStorage);
 bot.dialog('/', [
     function (session) {
        var text = teams.TeamsMessage.getTextWithoutMentions(session.message);
-        builder.Prompts.text(session, 'You asked for help.');
+        builder.Prompts.text(session, 'You asked for help. Yes or No?');
+    },
+   function (session, results) {
+        session.endDialog('Sounds good.', results.response);
+    }
+]);
         
         var command = text.split(" ")[0];
         var extras = text.split(command+" ")[1];
@@ -49,11 +54,7 @@ bot.dialog('/', [
                 help(extras,session);
                 break;                
         }
-    },
-    function (session, results) {
-        session.endDialog('Hello %s!', results.response);
-    }
-]);
+    
 
 
 function help(targets,session){
