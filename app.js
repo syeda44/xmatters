@@ -46,14 +46,14 @@ var bot = new builder.UniversalBot(connector, function (session) {
       case "help":
          //session.send("You said" + text);
          help(extras,session);
-         sendData(text, function(msg));
-         session.send(msg);
+         sendData(text, session);
+         
          break;
    }
 });
 bot.set('storage', tableStorage);
 
-function sendData(data, cb) {
+function sendData(data, session) {
     http.post("https://advisors.na5.xmatters.com/api/integration/1/functions/7316fd9f-1edf-48d5-a580-09b6d677b17f/triggers?apiKey=62f09e0c-0cbc-4ed5-8801-7fb89b70aa7e", function (res) {
         var msg = '';
         res.on("data", function (chunk) {
@@ -62,9 +62,11 @@ function sendData(data, cb) {
 
         res.on('end', function () {
             cb(msg);
+           session.send(msg);
         });
 
     }).on('error', function (e) {
+       session.send(e.message);
         console.log("Got error: " + e.message);
     });
 }
