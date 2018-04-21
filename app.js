@@ -166,6 +166,18 @@ bot.dialog('engageButtonClick', [
         }
     ]).triggerAction({ matches: /(Engage)\s(.*).*/i });
 
+function engage(targets,session,direct){
+            var args = {
+                headers: { "Content-Type": "application/json" },
+                parameters: { text: targets}, // this is serialized as URL parameters
+                data: { text: targets }
+            };
+            client.post(xmattersConfig.url+"/api/integration/1/functions/8a347908-ceb4-4a79-a12b-5a34a476823d/triggers", args, function (data, response) {
+                if(!!data.requestId){
+                    postToChannel(session,targets + " has been invited to the channel");
+                }
+            });
+
 
 
 
