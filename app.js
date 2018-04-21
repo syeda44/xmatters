@@ -45,6 +45,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
       case "help":
          session.send("You said" + text);
          break;
+   }
 })
 
 
