@@ -38,8 +38,9 @@ bot.set('storage', tableStorage);
 
 bot.dialog('/', [
     function (session) {
-        session.beginDialog('askName');
-        var text = teams.TeamsMessage.getTextWithoutMentions(session.message);
+       var text = teams.TeamsMessage.getTextWithoutMentions(session.message);
+        builder.Prompts.text(session, 'You asked for help.');
+        
         var command = text.split(" ")[0];
         var extras = text.split(command+" ")[1];
 
@@ -53,14 +54,7 @@ bot.dialog('/', [
         session.endDialog('Hello %s!', results.response);
     }
 ]);
-bot.dialog('askName', [
-    function (session) {
-        builder.Prompts.text(session, 'Hi! What is your name?');
-    },
-    function (session, results) {
-        session.endDialogWithResult(results);
-    }
-]);
+
 
 function help(targets,session){
         var helpText = "**You can do the following commands:**\n\n";
