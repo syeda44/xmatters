@@ -35,7 +35,10 @@ var azureTableClient = new botbuilder_azure.AzureTableClient(tableName, process.
 var tableStorage = new botbuilder_azure.AzureBotStorage({ gzipData: false }, azureTableClient);
 
 // Create your bot with a function to receive messages from the user
-var bot = new builder.UniversalBot(connector);
+//var bot = new builder.UniversalBot(connector);
+var bot = new builder.UniversalBot(connector, function (session) {
+    session.send("You said: %s", session.message.text);
+});
 bot.set('storage', tableStorage);
 
 bot.dialog('/', [
