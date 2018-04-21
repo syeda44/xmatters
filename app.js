@@ -41,7 +41,6 @@ bot.set('storage', tableStorage);
 bot.dialog('/', [
     function (session) {
        session.otext = session.message.text;
-       console.log(text);
         builder.Prompts.text(session, "You asked for help");
     },
     function (session, results) {
