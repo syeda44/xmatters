@@ -13,13 +13,11 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 });
   
 // Create chat connector for communicating with the Bot Framework Service
-
 var connector = new builder.ChatConnector({
     appId: process.env.MicrosoftAppId,
     appPassword: process.env.MicrosoftAppPassword,
     openIdMetadata: process.env.BotOpenIdMetadata 
 });
-
 
 // Listen for messages from users 
 server.post('/api/messages', connector.listen());
@@ -38,8 +36,7 @@ var tableStorage = new botbuilder_azure.AzureBotStorage({ gzipData: false }, azu
 var bot = new builder.UniversalBot(connector);
 bot.set('storage', tableStorage);
 
-
-bot.dialog('greetings', [
+bot.dialog('/', [
     function (session) {
         builder.Prompts.text(session, "Hello... What's your name?");
     },
@@ -58,5 +55,3 @@ bot.dialog('greetings', [
                     " years and use " + session.userData.language + ".");
     }
 ]);
-
-
