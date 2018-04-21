@@ -166,6 +166,52 @@ bot.dialog('engageButtonClick', [
         }
     ]).triggerAction({ matches: /(Engage)\s(.*).*/i });
 
+function engage(targets,session,direct){
+        console.log("engage");
+
+        if(!direct){
+            xmatters.groupsExists(targets, savedSession, bot, builder, function(newTargets,invalidGroups){
+
+                var args = {
+                    headers: { "Content-Type": "application/json" },
+                    parameters: { text: newTargets}, // this is serialized as URL parameters
+                    data: { text: newTargets }
+                };
+                client.post(xmattersConfig.url+"/api/integration/1/functions/8a347908-ceb4-4a79-a12b-5a34a476823d/triggers", args, function (data, response) {
+                    if(!!data.requestId){
+                        postToChannel(session,newTargets + " has been invited to the channel");
+                    }
+                });
+            });
+        }else{
+            var args = {
+                headers: { "Content-Type": "application/json" },
+                parameters: { text: targets}, // this is serialized as URL parameters
+                data: { text: targets }
+            };
+            client.post(xmattersConfig.url+"/api/integration/1/functions/8a347908-ceb4-4a79-a12b-5a34a476823d/triggers", args, function (data, response) {
+                if(!!data.requestId){
+                    postToChannel(session,targets + " has been invited to the channel");
+                }
+            });
+        }
+    }
+
+    // Inbound functions
+    function respond(req, res, next) {
+        var msg = new builder.Message().address(savedAddress);
+        msg.text(req.body.text);
+        msg.textLocale('en-US');
+        bot.send(msg);
+
+        next();
+    }
+
+    // Export the connector for any downstream integration - e.g. registering a messaging extension
+    module.exports.connector = connector;
+};
+
+
 
 
 
