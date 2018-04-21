@@ -38,13 +38,14 @@ var tableStorage = new botbuilder_azure.AzureBotStorage({ gzipData: false }, azu
 var bot = new builder.UniversalBot(connector);
 bot.set('storage', tableStorage);
 
+var userMessage = session.message.text;
+
 bot.dialog('/', [
     function (session) {
-       session.otext = session.message.text;
-        builder.Prompts.text(session, "You asked for help");
+        builder.Prompts.text(session, "You asked for help" + userMessage);
     },
     function (session, results) {
-        session.send("Got it... " + session.otext);
+        session.send("Got it... " + userMessage);
     }
 ]);
         
