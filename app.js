@@ -42,7 +42,9 @@ var bot = new builder.UniversalBot(connector, function (session) {
    var command = text.split(" ")[0];
    var extras = text.split(command+" ")[1];
    switch(command){
-      session.send("You said" + text);             
+      case "help":
+         session.send("You said" + text); 
+         break;
    }
     }).set('storage', inMemoryStorage); // Register in memory storage;
 
