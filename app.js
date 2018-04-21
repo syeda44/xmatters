@@ -43,7 +43,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
    var extras = text.split(command+" ")[1];
    switch(command){
       case "help":
-         session.send("You said" + text);
+         //session.send("You said" + text);
          help(extras,session);
          break;
    }
@@ -72,6 +72,99 @@ function postToChannel(session, text,type){
         console.log(msg);
         bot.send(msg);
     }
+
+bot.dialog('engageButtonClick', [
+        function (session, args, next) {
+
+            var utterance = args.intent.matched[0];
+            var engageMethod = /(SMS|E-Mail|Any Method)/i.exec(utterance);
+            var engageType = /\b(Critical Incident|Invite to chat)\b/i.exec(utterance);
+            var recipientType = /\b(Directly)\b/i.exec(utterance);
+
+             var contactType = session.dialogData.contactType = {
+                utterance: utterance,
+                endpoint: "engage",
+                engageMethod: engageMethod ? engageMethod[0].toLowerCase() : null,
+                engageType: engageType ? engageType[0].toLowerCase() : null,
+                target: utterance.split(" ")[1] ? utterance.split(" ")[1] : null,
+                recipientType: recipientType ? recipientType[0].toLowerCase()+" " : "",
+            };
+
+            //TODO: ensure group exists
+
+            if(contactType.engageType){
+                next();
+            }else{
+                var msg = new builder.Message(session);
+                msg.attachments([
+                    new builder.HeroCard(session)
+                        .title("Engagement Type")
+                        .subtitle("Choose the type of engagement")
+                        .buttons([
+                            builder.CardAction.imBack(session, "Engage "+contactType.target+" "+contactType.recipientType+"Critical Incident", "Critical Incident"),
+                            builder.CardAction.imBack(session, "Engage "+contactType.target+" "+contactType.recipientType+"Invite to chat", "Invite to chat")
+                        ])
+                ]);
+                session.send(msg).endDialog();
+            } 
+        },
+        function (session, args, next) {
+            var contactType = session.dialogData.contactType;
+            var utterance = contactType.utterance;
+
+            if(contactType.engageType == "critical incident"){
+
+                var engagePriority = /(High|Medium|Low)/i.exec(utterance);
+                contactType.engagePriority = engagePriority ? engagePriority[0].toLowerCase() : null
+                session.dialogData.contactType = contactType;
+
+                if(contactType.engagePriority){
+                    next();
+                }else{
+                    var msg = new builder.Message(session);
+                    msg.attachments([
+                        new builder.HeroCard(session)
+                            .title("Incident Priority")
+                            .subtitle("Choose the priority of incident")
+                            .buttons([
+                                builder.CardAction.imBack(session, "Engage "+contactType.target+" "+contactType.recipientType+"Critical Incident with High Priority", "High"),
+                                builder.CardAction.imBack(session, "Engage "+contactType.target+" "+contactType.recipientType+"Critical Incident with Medium Priority", "Medium"),
+                                builder.CardAction.imBack(session, "Engage "+contactType.target+" "+contactType.recipientType+"Critical Incident with Low Priority", "Low")
+                            ])
+                    ]);
+                    session.send(msg).endDialog();
+                } 
+            }else{
+                next();
+            }
+        },
+        function (session, results) {
+            var contactType = session.dialogData.contactType;
+            contactType.recipientType = contactType.recipientType.trim();
+
+            if(contactType.engageType == "critical incident"){
+
+                var args = {
+                    data: contactType,
+                    headers: { "Content-Type": "application/json" }
+                };
+
+                xmatters.xmattersInstance.post(xmattersConfig.url + "/api/integration/1/functions/"+xmattersConfig.integrationCodes.engage_incident+"/triggers", args, function (data, response) {
+                    session.send(contactType.target+" engaged").endDialog();
+                });
+
+            }else{
+                savedAddress = session.message.address;
+                savedSession = session;
+                var direct = true;
+                if(contactType.recipientType == ""){
+                    direct = false;
+                }
+                
+                engage(contactType.target,session,direct);
+            }
+        }
+    ]).triggerAction({ matches: /(Engage)\s(.*).*/i });
 
 
 
