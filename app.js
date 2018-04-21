@@ -42,19 +42,6 @@ var connector = new builder.ConsoleConnector().listen();
 var bot = new builder.UniversalBot(connector, function (session) {
     session.send("You said: %s", session.message.text);
 });
-var bot = new builder.UniversalBot(connector, function (session) {
-    session.send("You said: %s", session.message.text);
-});
-bot.set('storage', tableStorage);
 
-bot.dialog('/', [
-    function (session) {
-       session.send("Good morning");
-        builder.Prompts.text(session, "You asked for help" + userMessage);
-    },
-    function (session, results) {
-        session.send("Got it... " + userMessage);
-    }
-]);
         
        
