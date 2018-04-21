@@ -1,3 +1,8 @@
+module.exports.setup = function(app) {
+    var builder = require('botbuilder');
+    var teams = require('botbuilder-teams');
+
+
 /*-----------------------------------------------------------------------------
 A simple echo bot for the Microsoft Bot Framework. 
 -----------------------------------------------------------------------------*/
