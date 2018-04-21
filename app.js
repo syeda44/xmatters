@@ -4,7 +4,6 @@
 * xMatters Custom Stuff
 * -------------------------------------------------------------------*/
 
-'use strict';
 
 module.exports.setup = function(app) {
     var builder = require('botbuilder');
