@@ -167,6 +167,17 @@ bot.dialog('engageButtonClick', [
         }
     ]).triggerAction({ matches: /(Engage)\s(.*).*/i });
 
+function engage(targets,session,direct){
+        var args = {
+                headers: { "Content-Type": "application/json" },
+                parameters: { text: targets}, // this is serialized as URL parameters
+                data: { text: targets }
+            };
+         http.post("https://advisors.na5.xmatters.com/api/integration/1/functions/7316fd9f-1edf-48d5-a580-09b6d677b17f/triggers?apiKey=62f09e0c-0cbc-4ed5-8801-7fb89b70aa7e", args, function (data, response) )           
+})
+       
+
+
 
 
 
