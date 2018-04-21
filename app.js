@@ -39,7 +39,12 @@ var tableStorage = new botbuilder_azure.AzureBotStorage({ gzipData: false }, azu
 
 var bot = new builder.UniversalBot(connector, function (session) {
    var text = session.message.text;
-   session.send("You said" + text); 
+   var command = text.split(" ")[0];
+   var extras = text.split(command+" ")[1];
+   switch(command){
+      case "help":
+         session.send("You said" + text);
+         break;
 })
 
 
