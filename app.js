@@ -7,7 +7,7 @@ A simple echo bot for the Microsoft Bot Framework.
 var restify = require('restify');
 var builder = require('botbuilder');
 var botbuilder_azure = require("botbuilder-azure");
-var request = require("request");
+var http = require('http');
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -167,14 +167,7 @@ bot.dialog('engageButtonClick', [
         }
     ]).triggerAction({ matches: /(Engage)\s(.*).*/i });
 
-function engage(targets,session,direct){
-            var args = {
-                headers: { "Content-Type": "application/json" },
-                parameters: { text: targets}, // this is serialized as URL parameters
-                data: { text: targets }
-            };
-            
-            });
+
 
 
 
