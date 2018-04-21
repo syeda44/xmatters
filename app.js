@@ -44,8 +44,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
    switch(command){
       session.send("You said" + text);             
    }
-    });
-bot.set('storage', inMemoryStorage); // Register in memory storage;
+    }).set('storage', inMemoryStorage); // Register in memory storage;
 
 
         
