@@ -39,6 +39,15 @@ bot.set('storage', tableStorage);
 bot.dialog('/', [
     function (session) {
         session.beginDialog('askName');
+        var text = teams.TeamsMessage.getTextWithoutMentions(session.message);
+        var command = text.split(" ")[0];
+        var extras = text.split(command+" ")[1];
+
+        switch(command){
+            case "help":
+                help(extras,session);
+                break;                
+        }
     },
     function (session, results) {
         session.endDialog('Hello %s!', results.response);
@@ -52,3 +61,27 @@ bot.dialog('askName', [
         session.endDialogWithResult(results);
     }
 ]);
+
+function help(targets,session){
+        var helpText = "**You can do the following commands:**\n\n";
+        helpText += ". \n\n";
+        helpText += "**help:** Displays this help\n\n";
+        helpText += "**oncall [group]:** Displays who's on call\n\n";
+        helpText += "**engage [group]:** Invite people to the chat\n\n";
+        helpText += "**confCall:** Creates a conference bridge\n\n";
+
+        postToChannel(session,helpText,"markdown");
+    }
+
+function postToChannel(session, text,type){
+        var msg = new builder.Message(session);
+        msg.text(text);
+        if(!!type){
+            console.log(type);
+            msg.textFormat(type);
+        }
+        msg.textLocale('en-US');
+        console.log(msg);
+        bot.send(msg);
+    }
+
