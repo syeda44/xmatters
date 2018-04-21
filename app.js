@@ -1,6 +1,3 @@
-module.exports.setup = function(app) {
-    var builder = require('botbuilder');
-    var teams = require('botbuilder-teams');
 
 
 /*-----------------------------------------------------------------------------
@@ -43,7 +40,7 @@ bot.set('storage', tableStorage);
 
 bot.dialog('/', [
     function (session) {
-       var text = teams.TeamsMessage.getTextWithoutMentions(session.message);
+       var text = results.response;
        console.log(text);
         builder.Prompts.text(session, "You asked for help");
     },
