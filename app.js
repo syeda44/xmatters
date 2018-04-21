@@ -40,12 +40,12 @@ bot.set('storage', tableStorage);
 
 bot.dialog('/', [
     function (session) {
-       var text = session.message.text;
+       var session.otext = session.message.text;
        console.log(text);
         builder.Prompts.text(session, "You asked for help");
     },
     function (session, results) {
-        session.send("Got it... " + text);
+        session.send("Got it... " + session.otext);
     }
 ]);
         
