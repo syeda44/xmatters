@@ -1,0 +1,15 @@
+{
+    "bot": {
+        "microsoftAppId": "c992d40a-d64c-4321-adfe-4aab2da59e65",
+        "microsoftAppPassword": "HdNyMB4*N${!|83^"
+    },
+    "xmatters": {
+    	"url": "https://xmatters-url.com",
+    	"username": "user",
+    	"password": "pass",
+    	"integrationCodes":{
+    		"engage_incident": "********-****-****-****-************",
+    		"confCall": "********-****-****-****-************"
+    	}
+    }
+}
