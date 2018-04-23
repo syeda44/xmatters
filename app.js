@@ -7,7 +7,8 @@ A simple echo bot for the Microsoft Bot Framework.
 var restify = require('restify');
 var builder = require('botbuilder');
 var botbuilder_azure = require("botbuilder-azure");
-var http = require('http');
+//var http = require('http');
+var request = require('request');
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -53,23 +54,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 });
 bot.set('storage', tableStorage);
 
-function sendData(data, session) {
-    http.post("https://advisors.na5.xmatters.com/api/integration/1/functions/7316fd9f-1edf-48d5-a580-09b6d677b17f/triggers?apiKey=62f09e0c-0cbc-4ed5-8801-7fb89b70aa7e", function (res) {
-        var msg = '';
-        res.on("data", function (chunk) {
-            msg += chunk;
-        });
 
-        res.on('end', function () {
-            cb(msg);
-           session.send(msg);
-        });
-
-    }).on('error', function (e) {
-       session.send(e.message);
-        console.log("Got error: " + e.message);
-    });
-}
 
 function help(targets,session){
         var helpText = "**You can do the following commands:**\n\n";
