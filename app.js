@@ -55,7 +55,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 });
 bot.set('storage', tableStorage);
 
-bot.dialog('/', [
+bot.dialog('help', [
     function (session) {
         builder.Prompts.text(session, "Hello... What's your name?");
     },
@@ -73,7 +73,7 @@ bot.dialog('/', [
                     " you've been programming for " + session.userData.coding + 
                     " years and use " + session.userData.language + ".");
     }
-]);
+]).triggerAction({ matches: /(Help)\s(.*).*/i });
 
 
 
