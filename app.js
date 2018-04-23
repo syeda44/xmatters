@@ -47,14 +47,24 @@ var bot = new builder.UniversalBot(connector, function (session) {
       case "help":
          //session.send("You said" + text);
          help(extras,session);
-         sendData(text, session);
+         postData(text, session);
          
          break;
    }
 });
 bot.set('storage', tableStorage);
 
-
+function postData(text, session){
+    request.post(
+       'https://advisors.na5.xmatters.com/api/integration/1/functions/7316fd9f-1edf-48d5-a580-09b6d677b17f/triggers?apiKey=62f09e0c-0cbc-4ed5-8801-7fb89b70aa7e',
+       { json: { key: 'value' } },
+       function (error, response, body) {
+           if (!error && response.statusCode == 200) {
+               console.log(body)
+           }
+       }
+   );  
+}
 
 function help(targets,session){
         var helpText = "**You can do the following commands:**\n\n";
