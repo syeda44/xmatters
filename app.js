@@ -73,7 +73,7 @@ bot.dialog('hello', [
                     " you've been programming for " + session.userData.coding + 
                     " years and use " + session.userData.language + ".");
     }
-])]).triggerAction({ matches: /(Hello)\s(.*).*/i });
+]).triggerAction({ matches: /(Hello)\s(.*).*/i });
 
 
 
