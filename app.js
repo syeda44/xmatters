@@ -49,11 +49,21 @@ var bot = new builder.UniversalBot(connector, function (session) {
          //session.send("You said" + text);
          help(extras,session);
          break;
+         */
    }
-   */
+   
    
 });
 bot.set('storage', tableStorage);
+
+bot.dialog('/', [
+    function (session) {
+        builder.Prompts.text(session, "Not a triggered word.  Try Help.");
+        session.endDialog();
+    },
+    
+        
+]);
 
 bot.dialog('Hello', [
     function (session) {
@@ -72,6 +82,7 @@ bot.dialog('Hello', [
         session.send("Got it... " + session.userData.name + 
                     " you've been programming for " + session.userData.coding + 
                     " years and use " + session.userData.language + ".");
+        session.endDialog();
     }
 ]).triggerAction({ matches: /^Hello$/i });
 
