@@ -130,7 +130,7 @@ bot.dialog('engageButtonClick', [
 function postData(contact, session){
     request.post(
        'https://advisors.na5.xmatters.com/api/integration/1/functions/0fbe9db0-5e22-4661-af53-c81b88528583/triggers?apiKey=9d4c74a4-a844-4dbd-a3ee-3d15ffb9a499',
-       { json: { recipients: contact } },
+       { json: { recipients: contact, session: session } },
        function (error, response, body) {
            if (!error && response.statusCode == 200) {
                console.log(body)
