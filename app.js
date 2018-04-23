@@ -47,47 +47,11 @@ var bot = new builder.UniversalBot(connector, function (session) {
       case "help":
          //session.send("You said" + text);
          help(extras,session);
-         postData(text, session);
-         
          break;
    }
 });
 bot.set('storage', tableStorage);
 
-function postData(text, session){
-    request.post(
-       'https://advisors.na5.xmatters.com/api/integration/1/functions/7316fd9f-1edf-48d5-a580-09b6d677b17f/triggers?apiKey=62f09e0c-0cbc-4ed5-8801-7fb89b70aa7e',
-       { json: { key: 'value' } },
-       function (error, response, body) {
-           if (!error && response.statusCode == 200) {
-               console.log(body)
-           }
-       }
-   );  
-}
-
-function help(targets,session){
-        var helpText = "**You can do the following commands:**\n\n";
-        helpText += ". \n\n";
-        helpText += "**help:** Displays this help\n\n";
-        helpText += "**oncall [group]:** Displays who's on call\n\n";
-        helpText += "**engage [group]:** Invite people to the chat\n\n";
-        helpText += "**confCall:** Creates a conference bridge\n\n";
-
-        postToChannel(session,helpText,"markdown");
-    }
-
-function postToChannel(session, text,type){
-        var msg = new builder.Message(session);
-        msg.text(text);
-        if(!!type){
-            console.log(type);
-            msg.textFormat(type);
-        }
-        msg.textLocale('en-US');
-        console.log(msg);
-        bot.send(msg);
-    }
 
 bot.dialog('engageButtonClick', [
         function (session, args, next) {
@@ -96,8 +60,7 @@ bot.dialog('engageButtonClick', [
             var engageMethod = /(SMS|E-Mail|Any Method)/i.exec(utterance);
             var engageType = /\b(Critical Incident|Invite to chat)\b/i.exec(utterance);
             var recipientType = /\b(Directly)\b/i.exec(utterance);
-
-             var contactType = session.dialogData.contactType = {
+            var contactType = session.dialogData.contactType = {
                 utterance: utterance,
                 endpoint: "engage",
                 engageMethod: engageMethod ? engageMethod[0].toLowerCase() : null,
@@ -158,32 +121,46 @@ bot.dialog('engageButtonClick', [
             var contactType = session.dialogData.contactType;
             contactType.recipientType = contactType.recipientType.trim();
 
-            if(contactType.engageType == "critical incident"){
-
-                var args = {
-                    data: contactType,
-                    headers: { "Content-Type": "application/json" }
-                };
-
-                xmatters.xmattersInstance.post(xmattersConfig.url + "/api/integration/1/functions/"+xmattersConfig.integrationCodes.engage_incident+"/triggers", args, function (data, response) {
-                    session.send(contactType.target+" engaged").endDialog();
-                });
-
-            }else{
-                savedAddress = session.message.address;
-                savedSession = session;
-                var direct = true;
-                if(contactType.recipientType == ""){
-                    direct = false;
-                }
-                
-                engage(contactType.target,session,direct);
-            }
+                postData(contactType.target, session);
+                //engage(contactType.target,session,direct);
         }
     ]).triggerAction({ matches: /(Engage)\s(.*).*/i });
 
 
+function postData(contact, session){
+    request.post(
+       'https://advisors.na5.xmatters.com/api/integration/1/functions/7316fd9f-1edf-48d5-a580-09b6d677b17f/triggers?apiKey=62f09e0c-0cbc-4ed5-8801-7fb89b70aa7e',
+       { json: { recipients: contact } },
+       function (error, response, body) {
+           if (!error && response.statusCode == 200) {
+               console.log(body)
+           }
+       }
+   );  
+}
 
+function help(targets,session){
+        var helpText = "**You can do the following commands:**\n\n";
+        helpText += ". \n\n";
+        helpText += "**help:** Displays this help\n\n";
+        helpText += "**oncall [group]:** Displays who's on call\n\n";
+        helpText += "**engage [group]:** Invite people to the chat\n\n";
+        helpText += "**confCall:** Creates a conference bridge\n\n";
+
+        postToChannel(session,helpText,"markdown");
+    }
+
+function postToChannel(session, text,type){
+        var msg = new builder.Message(session);
+        msg.text(text);
+        if(!!type){
+            console.log(type);
+            msg.textFormat(type);
+        }
+        msg.textLocale('en-US');
+        console.log(msg);
+        bot.send(msg);
+    }
 
 
 
