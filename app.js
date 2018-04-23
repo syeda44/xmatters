@@ -51,7 +51,11 @@ var bot = new builder.UniversalBot(connector, function (session) {
          break;
    }
    */
-   bot.dialog('/', [
+   
+});
+bot.set('storage', tableStorage);
+
+bot.dialog('hello', [
     function (session) {
         builder.Prompts.text(session, "Hello... What's your name?");
     },
@@ -69,11 +73,8 @@ var bot = new builder.UniversalBot(connector, function (session) {
                     " you've been programming for " + session.userData.coding + 
                     " years and use " + session.userData.language + ".");
     }
-]);
+])]).triggerAction({ matches: /(Hello)\s(.*).*/i });
 
-
-});
-bot.set('storage', tableStorage);
 
 
 bot.dialog('engageButtonClick', [
